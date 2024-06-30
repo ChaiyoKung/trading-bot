@@ -37,6 +37,7 @@ export class CdcActionZoneStrategy implements Strategy {
 
     if (this.status === 'Sell' && isPreBuy) {
       await this.bot.closeAllPositions();
+      await this.bot.cancelAllOrders();
       this.status = 'Idle';
     }
 
@@ -48,6 +49,7 @@ export class CdcActionZoneStrategy implements Strategy {
 
     if (this.status === 'Buy' && isPreSell) {
       await this.bot.closeAllPositions();
+      await this.bot.cancelAllOrders();
       this.status = 'Idle';
     }
 
