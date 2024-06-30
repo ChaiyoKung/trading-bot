@@ -32,11 +32,14 @@ You can also use `npm` or `yarn` if you prefer.
 Explore the provided scripts to enhance your development experience:
 
 ```bash
-# Start the code
+# Start the code in production mode
 pnpm start
 
-# Start the code with watch mode
+# Start the code in development mode
 pnpm dev
+
+# Start the code in development mode with watch
+pnpm dev:watch
 
 # Test the code with watch mode
 pnpm test
