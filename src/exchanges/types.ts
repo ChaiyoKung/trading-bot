@@ -31,4 +31,5 @@ export abstract class Exchange {
   public abstract createMarketBuyOrder(usdt: number, price: number): Promise<Order>;
   public abstract createMarketSellOrder(usdt: number, price: number): Promise<Order>;
   public abstract closeAllPositions(): Promise<Array<Position>>;
+  public abstract cancelAllOrders(): Promise<Array<Order>>;
 }

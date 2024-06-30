@@ -69,4 +69,9 @@ export class BingX extends Exchange {
     console.info(`${new Date().toISOString()} [INFO] close all positions`);
     return this.exchange.closeAllPositions(this.symbol);
   }
+
+  public async cancelAllOrders(): Promise<Array<Order>> {
+    console.info(`${new Date().toISOString()} [INFO] canncel all orders`);
+    return this.exchange.cancelAllOrders();
+  }
 }
