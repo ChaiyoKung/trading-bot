@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "start": "npm run build && node ./dist/main.js",
+    "start": "node ./dist/main.js",
     "dev": "tsx src/main.ts",
     "dev:watch": "tsx watch src/main.ts",
     "test:coverage": "vitest run --coverage",
