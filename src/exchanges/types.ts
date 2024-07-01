@@ -1,4 +1,4 @@
-import type { Exchange as CCXTExchange, Int, Order, Position } from 'ccxt';
+import type { Exchange as CCXTExchange, Int, Order, Position, Ticker } from 'ccxt';
 import pl from 'nodejs-polars';
 
 export type OHLCVProperty = 'timestamp' | 'open' | 'high' | 'low' | 'close' | 'volume';
@@ -26,6 +26,10 @@ export abstract class Exchange {
     const ohlcv = await this.exchange.fetchOHLCV(this.symbol, this.timeframe, since, limit, params);
     const df = pl.DataFrame(ohlcv, { columns: ['timestamp', 'open', 'high', 'low', 'close', 'volume'] });
     return df.toRecords();
+  }
+
+  public async fetchTicker(params?: Record<string, unknown> | undefined): Promise<Ticker> {
+    return this.exchange.fetchTicker(this.symbol, params);
   }
 
   public abstract createMarketBuyOrder(usdt: number, price: number): Promise<Order>;
