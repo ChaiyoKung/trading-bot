@@ -11,13 +11,13 @@ export interface OHLCV {
 }
 
 export class ExchangeHandler {
-  private exchange: Exchange;
+  private readonly exchange: Exchange;
 
   constructor(exchange: Exchange) {
     this.exchange = exchange;
   }
 
-  async fetchOHLCV(symbol: string, timeframe: string, limit: number = 300): Promise<OHLCV[]> {
+  public async fetchOHLCV(symbol: string, timeframe: string, limit: number = 300): Promise<OHLCV[]> {
     const ohlcv = await this.exchange.fetchOHLCV(symbol, timeframe, undefined, limit);
     const ohlcvParsed = this.parseOHLCV(ohlcv);
     return ohlcvParsed.map(candle => ({
