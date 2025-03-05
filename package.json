@@ -2,6 +2,10 @@
   "name": "trading-bot",
   "module": "src/main.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run src/main.ts",
+    "dev:watch": "bun run --watch src/main.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
