@@ -37,28 +37,28 @@ export class FourEmaTrend extends BaseStrategy {
     // create buy market order if prev is not up trend and latest is up trend and latest close price is higher than latest ema20
     if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestEma20) {
       console.log("Creating buy market order...");
-      await this.exchange.createMarketBuyOrder(this.symbol, 0.001);
+      await this.exchange.createMarketBuyOrder(this.options.symbol, 0.001);
       console.log("Buy market order created");
     }
 
     // cancel buy market order if prev is up trend and latest is up trend and latest close price is lower than latest ema20
     else if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestEma20) {
       console.log("Cancelling buy market order...");
-      await this.exchange.cancelAllOrders(this.symbol);
+      await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
     }
 
     // create sell market order if prev is not down trend and latest is down trend and latest close price is lower than latest ema20
     else if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestEma20) {
       console.log("Creating sell market order...");
-      await this.exchange.createMarketSellOrder(this.symbol, 0.001);
+      await this.exchange.createMarketSellOrder(this.options.symbol, 0.001);
       console.log("Sell market order created");
     }
 
     // cancel sell market order if prev is down trend and latest is down trend and latest close price is higher than latest ema20
     else if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestEma20) {
       console.log("Cancelling sell market order...");
-      await this.exchange.cancelAllOrders(this.symbol);
+      await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
     }
 

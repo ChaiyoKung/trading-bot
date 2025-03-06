@@ -13,5 +13,5 @@ console.table(
 
 const symbol = "BTC/USDT:USDT";
 const timeframe = "4h";
-const strategy = new FourEmaTrend(exchange, symbol, timeframe);
+const strategy = new FourEmaTrend(exchange, { symbol, timeframe });
 await strategy.run();

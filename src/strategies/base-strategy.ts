@@ -12,15 +12,20 @@ const ohlcvSchema = z.array(
   ])
 );
 
+export interface StrategyOptions {
+  symbol: string;
+  timeframe: string;
+}
+
 export abstract class BaseStrategy {
   constructor(
     protected readonly exchange: Exchange,
-    protected readonly symbol: string,
-    protected readonly timeframe: string
+    protected readonly options: StrategyOptions
   ) {}
 
   protected async fetchOhlcv() {
-    const ohlcv = await this.exchange.fetchOHLCV(this.symbol, this.timeframe);
+    const { symbol, timeframe } = this.options;
+    const ohlcv = await this.exchange.fetchOHLCV(symbol, timeframe);
     return this.parseOhlcv(ohlcv);
   }
 
