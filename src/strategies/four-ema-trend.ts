@@ -3,10 +3,12 @@ import { ema } from "technicalindicators";
 
 export class FourEmaTrend extends BaseStrategy {
   async run(): Promise<void> {
+    console.log("Fetching OHLCV data...");
     const ohlcv = await this.fetchOhlcv();
     ohlcv.pop(); // remove the last candle because it's not closed yet
     console.table(ohlcv.slice(-5));
 
+    console.log("Calculating EMA values...");
     const reversedClosePrices = ohlcv.map((candle) => candle.close).reverse();
     const [latestClosePrice, prevClosePrice] = reversedClosePrices;
     console.table([{ prev: prevClosePrice, latest: latestClosePrice }]);
@@ -34,6 +36,7 @@ export class FourEmaTrend extends BaseStrategy {
     const isLatestDownTrend = latestEma20 < latestEma50 && latestEma50 < latestEma100 && latestEma100 < latestEma200;
     const isPrevDownTrend = prevEma20 < prevEma50 && prevEma50 < prevEma100 && prevEma100 < prevEma200;
 
+    console.log("Determining trade actions...");
     // create buy market order if prev is not up trend and latest is up trend and latest close price is higher than latest ema20
     if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestEma20) {
       console.log("Creating buy market order...");
