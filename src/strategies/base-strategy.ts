@@ -1,4 +1,4 @@
-import type { Exchange } from "ccxt";
+import type { Exchange, OHLCV } from "ccxt";
 import { z } from "zod";
 
 const ohlcvSchema = z.array(
@@ -21,7 +21,11 @@ export abstract class BaseStrategy {
 
   protected async fetchOhlcv() {
     const ohlcv = await this.exchange.fetchOHLCV(this.symbol, this.timeframe);
-    const parsedOhlcv = ohlcvSchema.parse(ohlcv).map((candle) => ({
+    return this.parseOhlcv(ohlcv);
+  }
+
+  private parseOhlcv(ohlcv: OHLCV[]) {
+    return ohlcvSchema.parse(ohlcv).map((candle) => ({
       timestamp: new Date(candle[0]),
       open: candle[1],
       high: candle[2],
@@ -29,7 +33,6 @@ export abstract class BaseStrategy {
       close: candle[4],
       volume: candle[5],
     }));
-    return parsedOhlcv;
   }
 
   public abstract run(): Promise<void>;
