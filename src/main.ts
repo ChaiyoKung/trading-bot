@@ -57,25 +57,33 @@ const isPrevDownTrend = prevEma20 < prevEma50 && prevEma50 < prevEma100 && prevE
 
 // create buy market order if prev is not up trend and latest is up trend and latest close price is higher than latest ema20
 if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestEma20) {
-  console.log("create buy market order");
+  console.log("Creating buy market order...");
+  await exchange.createMarketBuyOrder(symbol, 0.001);
+  console.log("Buy market order created");
 }
 
 // cancel buy market order if prev is up trend and latest is up trend and latest close price is lower than latest ema20
 else if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestEma20) {
-  console.log("cancel buy market order");
+  console.log("Cancelling buy market order...");
+  await exchange.cancelAllOrders(symbol);
+  console.log("All orders cancelled");
 }
 
 // create sell market order if prev is not down trend and latest is down trend and latest close price is lower than latest ema20
 else if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestEma20) {
-  console.log("create sell market order");
+  console.log("Creating sell market order...");
+  await exchange.createMarketSellOrder(symbol, 0.001);
+  console.log("Sell market order created");
 }
 
 // cancel sell market order if prev is down trend and latest is down trend and latest close price is higher than latest ema20
 else if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestEma20) {
-  console.log("cancel sell market order");
+  console.log("Cancelling sell market order...");
+  await exchange.cancelAllOrders(symbol);
+  console.log("All orders cancelled");
 }
 
 // do nothing
 else {
-  console.log("do nothing");
+  console.log("No action taken");
 }
