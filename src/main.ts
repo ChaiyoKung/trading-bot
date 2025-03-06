@@ -11,7 +11,9 @@ console.table(
     .filter((symbol) => symbol.includes("BTC"))
 );
 
-const ohlcv = await exchange.fetchOHLCV("BTC/USDT:USDT", "4h");
+const symbol = "BTC/USDT:USDT";
+const timeframe = "4h";
+const ohlcv = await exchange.fetchOHLCV(symbol, timeframe);
 const parsedOhlcv = z
   .array(z.tuple([z.number(), z.number(), z.number(), z.number(), z.number(), z.number()]))
   .parse(ohlcv)
