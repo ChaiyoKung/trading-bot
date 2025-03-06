@@ -1,18 +1,7 @@
-import { bingx } from "ccxt";
-import { z } from "zod";
 import { FourEmaTrend } from "./strategies/four-ema-trend";
+import { BingX } from "./exchanges/bingx";
 
-const envSchema = z.object({
-  BINGX_API_KEY: z.string(),
-  BINGX_SECRET_KEY: z.string(),
-});
-
-const env = envSchema.parse(process.env);
-
-const exchange = new bingx({
-  apiKey: env.BINGX_API_KEY,
-  secret: env.BINGX_SECRET_KEY,
-});
+const exchange = new BingX();
 exchange.setSandboxMode(true);
 const markets = await exchange.fetchMarkets();
 console.table(
