@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "bun run src/main.ts",
     "dev:watch": "bun run --watch src/main.ts",
+    "build": "bun build src/main.ts --target bun --outdir dist",
     "format": "prettier \"src/**/*.ts\" --write"
   },
   "devDependencies": {
