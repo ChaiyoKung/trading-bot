@@ -13,53 +13,56 @@ export class FourEmaTrend extends BaseStrategy {
     const [latestClosePrice, prevClosePrice] = reversedClosePrices;
     console.table([{ prev: prevClosePrice, latest: latestClosePrice }]);
 
-    const [ema20, ema50, ema100, ema200] = await Promise.all([
+    const [shortestEma, shortEma, longEma, longestEma] = await Promise.all([
       ema({ values: reversedClosePrices, period: 20, reversedInput: true }),
       ema({ values: reversedClosePrices, period: 50, reversedInput: true }),
       ema({ values: reversedClosePrices, period: 100, reversedInput: true }),
       ema({ values: reversedClosePrices, period: 200, reversedInput: true }),
     ]);
-    const [latestEma20, prevEma20] = ema20;
-    const [latestEma50, prevEma50] = ema50;
-    const [latestEma100, prevEma100] = ema100;
-    const [latestEma200, prevEma200] = ema200;
+    const [latestShortestEma, prevShortestEma] = shortestEma;
+    const [latestShortEma, prevShortEma] = shortEma;
+    const [latestLongEma, prevLongEma] = longEma;
+    const [latestLongestEma, prevLongestEma] = longestEma;
     console.table([
-      { period: 20, prev: prevEma20, latest: latestEma20 },
-      { period: 50, prev: prevEma50, latest: latestEma50 },
-      { period: 100, prev: prevEma100, latest: latestEma100 },
-      { period: 200, prev: prevEma200, latest: latestEma200 },
+      { period: 20, prev: prevShortestEma, latest: latestShortestEma },
+      { period: 50, prev: prevShortEma, latest: latestShortEma },
+      { period: 100, prev: prevLongEma, latest: latestLongEma },
+      { period: 200, prev: prevLongestEma, latest: latestLongestEma },
     ]);
 
-    const isLatestUpTrend = latestEma20 > latestEma50 && latestEma50 > latestEma100 && latestEma100 > latestEma200;
-    const isPrevUpTrend = prevEma20 > prevEma50 && prevEma50 > prevEma100 && prevEma100 > prevEma200;
+    const isLatestUpTrend =
+      latestShortestEma > latestShortEma && latestShortEma > latestLongEma && latestLongEma > latestLongestEma;
+    const isPrevUpTrend = prevShortestEma > prevShortEma && prevShortEma > prevLongEma && prevLongEma > prevLongestEma;
 
-    const isLatestDownTrend = latestEma20 < latestEma50 && latestEma50 < latestEma100 && latestEma100 < latestEma200;
-    const isPrevDownTrend = prevEma20 < prevEma50 && prevEma50 < prevEma100 && prevEma100 < prevEma200;
+    const isLatestDownTrend =
+      latestShortestEma < latestShortEma && latestShortEma < latestLongEma && latestLongEma < latestLongestEma;
+    const isPrevDownTrend =
+      prevShortestEma < prevShortEma && prevShortEma < prevLongEma && prevLongEma < prevLongestEma;
 
     console.log("Determining trade actions...");
-    // create buy market order if prev is not up trend and latest is up trend and latest close price is higher than latest ema20
-    if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestEma20) {
+    // create buy market order if prev is not up trend and latest is up trend and latest close price is higher than latest shortestEma
+    if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestShortestEma) {
       console.log("Creating buy market order...");
       await this.exchange.createMarketBuyOrder(this.options.symbol, 0.001);
       console.log("Buy market order created");
     }
 
-    // cancel buy market order if prev is up trend and latest is up trend and latest close price is lower than latest ema20
-    else if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestEma20) {
+    // cancel buy market order if prev is up trend and latest is up trend and latest close price is lower than latest shortestEma
+    else if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestShortestEma) {
       console.log("Cancelling buy market order...");
       await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
     }
 
-    // create sell market order if prev is not down trend and latest is down trend and latest close price is lower than latest ema20
-    else if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestEma20) {
+    // create sell market order if prev is not down trend and latest is down trend and latest close price is lower than latest shortestEma
+    else if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestShortestEma) {
       console.log("Creating sell market order...");
       await this.exchange.createMarketSellOrder(this.options.symbol, 0.001);
       console.log("Sell market order created");
     }
 
-    // cancel sell market order if prev is down trend and latest is down trend and latest close price is higher than latest ema20
-    else if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestEma20) {
+    // cancel sell market order if prev is down trend and latest is down trend and latest close price is higher than latest shortestEma
+    else if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestShortestEma) {
       console.log("Cancelling sell market order...");
       await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
