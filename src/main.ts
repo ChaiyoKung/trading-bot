@@ -1,8 +1,10 @@
 import { FourEmaTrend } from "./strategies/four-ema-trend";
 import { BingX } from "./exchanges/bingx";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const exchange = new BingX();
-exchange.setSandboxMode(true);
+exchange.setSandboxMode(!isProd);
 const markets = await exchange.fetchMarkets();
 console.table(
   markets
