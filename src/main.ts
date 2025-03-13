@@ -5,6 +5,8 @@ const isProd = process.env.NODE_ENV === "production";
 
 const exchange = new BingX();
 exchange.setSandboxMode(!isProd);
+
+console.log("Fetching markets...");
 const markets = await exchange.fetchMarkets();
 console.table(
   markets
