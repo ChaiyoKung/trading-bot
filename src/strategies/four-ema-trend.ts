@@ -57,9 +57,9 @@ export class FourEmaTrend extends BaseStrategy {
      * close long position if:
      * - prev is up trend
      * - latest is up trend
-     * - prev close price is lower than prev shortest ema
+     * - latest close price is lower than latest shortest ema
      */
-    if (isPrevUpTrend && isLatestUpTrend && prevClosePrice < prevShortestEma) {
+    if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestShortestEma) {
       console.log("Cancelling buy market order...");
       await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
@@ -83,9 +83,9 @@ export class FourEmaTrend extends BaseStrategy {
      * close short position if:
      * - prev is down trend
      * - latest is down trend
-     * - prev close price is higher than prev shortest ema
+     * - latest close price is higher than latest shortest ema
      */
-    if (isPrevDownTrend && isLatestDownTrend && prevClosePrice > prevShortestEma) {
+    if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestShortestEma) {
       console.log("Cancelling sell market order...");
       await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
