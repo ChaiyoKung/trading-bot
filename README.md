@@ -1,15 +1,18 @@
 # trading-bot
 
-To install dependencies:
+## Getting Started
+
+> This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+
+Install dependencies
 
 ```bash
 bun install
 ```
 
-To run:
+Run in development mode
 
 ```bash
-bun run src/main.ts
+bun run dev
+bun run dev:watch
 ```
-
-This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
