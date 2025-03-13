@@ -1,4 +1,4 @@
-# trading-bot
+# Trading Bot
 
 ## Getting Started
 
