@@ -16,3 +16,22 @@ Run in development mode
 bun run dev
 bun run dev:watch
 ```
+
+Run in production mode
+
+```bash
+docker compose up
+docker compose up --build
+```
+
+Build and push docker image to GitHub Container Registry
+
+> Learn more about [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+
+```bash
+docker build -t trading-bot .
+docker tag trading-bot ghcr.io/chaiyokung/trading-bot:latest
+
+# docker login ghcr.io
+docker push ghcr.io/chaiyokung/trading-bot:latest
+```
