@@ -40,37 +40,59 @@ export class FourEmaTrend extends BaseStrategy {
       prevShortestEma < prevShortEma && prevShortEma < prevLongEma && prevLongEma < prevLongestEma;
 
     console.log("Determining trade actions...");
-    // create buy market order if prev is not up trend and latest is up trend and latest close price is higher than latest shortestEma
+    /**
+     * open long position if:
+     * - prev is not up trend
+     * - latest is up trend
+     * - latest close price is higher than latest shortest ema
+     */
     if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestShortestEma) {
       console.log("Creating buy market order...");
       await this.exchange.createMarketBuyOrder(this.options.symbol, 0.001);
       console.log("Buy market order created");
+      return;
     }
 
-    // cancel buy market order if prev is up trend and latest is up trend and latest close price is lower than latest shortestEma
-    else if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestShortestEma) {
+    /**
+     * close long position if:
+     * - prev is up trend
+     * - latest is up trend
+     * - prev close price is lower than prev shortest ema
+     */
+    if (isPrevUpTrend && isLatestUpTrend && prevClosePrice < prevShortestEma) {
       console.log("Cancelling buy market order...");
       await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
+      return;
     }
 
-    // create sell market order if prev is not down trend and latest is down trend and latest close price is lower than latest shortestEma
-    else if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestShortestEma) {
+    /**
+     * open short position if:
+     * - prev is not down trend
+     * - latest is down trend
+     * - latest close price is lower than latest shortest ema
+     */
+    if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestShortestEma) {
       console.log("Creating sell market order...");
       await this.exchange.createMarketSellOrder(this.options.symbol, 0.001);
       console.log("Sell market order created");
+      return;
     }
 
-    // cancel sell market order if prev is down trend and latest is down trend and latest close price is higher than latest shortestEma
-    else if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestShortestEma) {
+    /**
+     * close short position if:
+     * - prev is down trend
+     * - latest is down trend
+     * - prev close price is higher than prev shortest ema
+     */
+    if (isPrevDownTrend && isLatestDownTrend && prevClosePrice > prevShortestEma) {
       console.log("Cancelling sell market order...");
       await this.exchange.cancelAllOrders(this.options.symbol);
       console.log("All orders cancelled");
+      return;
     }
 
     // do nothing
-    else {
-      console.log("No action taken");
-    }
+    console.log("No action taken");
   }
 }
