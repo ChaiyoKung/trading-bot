@@ -11,7 +11,6 @@ export class FourEmaTrend extends BaseStrategy {
     console.log("Calculating EMA values...");
     const reversedClosePrices = ohlcv.map((candle) => candle.close).reverse();
     const [latestClosePrice, prevClosePrice] = reversedClosePrices;
-    console.table([{ prev: prevClosePrice, latest: latestClosePrice }]);
 
     const [shortestEma, shortEma, longEma, longestEma] = await Promise.all([
       ema({ values: reversedClosePrices, period: 20, reversedInput: true }),
@@ -23,12 +22,14 @@ export class FourEmaTrend extends BaseStrategy {
     const [latestShortEma, prevShortEma] = shortEma;
     const [latestLongEma, prevLongEma] = longEma;
     const [latestLongestEma, prevLongestEma] = longestEma;
-    console.table([
-      { period: 20, prev: prevShortestEma, latest: latestShortestEma },
-      { period: 50, prev: prevShortEma, latest: latestShortEma },
-      { period: 100, prev: prevLongEma, latest: latestLongEma },
-      { period: 200, prev: prevLongestEma, latest: latestLongestEma },
-    ]);
+
+    console.table({
+      close: { prev: prevClosePrice.toFixed(2), latest: latestClosePrice.toFixed(2) },
+      "shortest ema": { prev: prevShortestEma.toFixed(2), latest: latestShortestEma.toFixed(2) },
+      "short ema": { prev: prevShortEma.toFixed(2), latest: latestShortEma.toFixed(2) },
+      "long ema": { prev: prevLongEma.toFixed(2), latest: latestLongEma.toFixed(2) },
+      "longest ema": { prev: prevLongestEma.toFixed(2), latest: latestLongestEma.toFixed(2) },
+    });
 
     const isLatestUpTrend =
       latestShortestEma > latestShortEma && latestShortEma > latestLongEma && latestLongEma > latestLongestEma;
