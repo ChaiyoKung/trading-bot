@@ -49,7 +49,7 @@ export class FourEmaTrend extends BaseStrategy {
      */
     if (!isPrevUpTrend && isLatestUpTrend && latestClosePrice > latestShortestEma) {
       console.log("Creating buy market order...");
-      await this.exchange.createMarketBuyOrder(this.options.symbol, 0.001);
+      await this.exchange.createMarketBuyOrder(this.options.symbol, 0.005);
       console.log("Buy market order created");
       return;
     }
@@ -75,7 +75,7 @@ export class FourEmaTrend extends BaseStrategy {
      */
     if (!isPrevDownTrend && isLatestDownTrend && latestClosePrice < latestShortestEma) {
       console.log("Creating sell market order...");
-      await this.exchange.createMarketSellOrder(this.options.symbol, 0.001);
+      await this.exchange.createMarketSellOrder(this.options.symbol, 0.005);
       console.log("Sell market order created");
       return;
     }
