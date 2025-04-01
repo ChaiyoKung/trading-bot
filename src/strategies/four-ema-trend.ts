@@ -61,9 +61,9 @@ export class FourEmaTrend extends BaseStrategy {
      * - latest close price is lower than latest shortest ema
      */
     if (isPrevUpTrend && isLatestUpTrend && latestClosePrice < latestShortestEma) {
-      console.log("Cancelling buy market order...");
+      console.log("Closing long position...");
       await this.exchange.closePosition(this.options.symbol, "buy");
-      console.log("All orders cancelled");
+      console.log("Long position closed");
       return;
     }
 
@@ -87,9 +87,9 @@ export class FourEmaTrend extends BaseStrategy {
      * - latest close price is higher than latest shortest ema
      */
     if (isPrevDownTrend && isLatestDownTrend && latestClosePrice > latestShortestEma) {
-      console.log("Cancelling sell market order...");
+      console.log("Closing short position...");
       await this.exchange.closePosition(this.options.symbol, "sell");
-      console.log("All orders cancelled");
+      console.log("Short position closed");
       return;
     }
 
