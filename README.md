@@ -20,6 +20,7 @@ bun run dev:watch
 Run in production mode
 
 ```bash
+bun run start
 docker compose up
 docker compose up --build
 ```
