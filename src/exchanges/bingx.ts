@@ -1,4 +1,4 @@
-import { bingx, Exchange, type Int } from "ccxt";
+import { bingx, Exchange, type Int, type OrderSide } from "ccxt";
 import { z } from "zod";
 
 const envSchema = z.object({
@@ -42,5 +42,9 @@ export class BingX extends Exchange {
 
   public async cancelAllOrders(symbol: string, params?: {}) {
     return this.exchange.cancelAllOrders(symbol, params);
+  }
+
+  public async closePosition(symbol: string, side?: OrderSide, params?: {}) {
+    return this.exchange.closePosition(symbol, side, params);
   }
 }
